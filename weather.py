@@ -6,6 +6,9 @@ from urllib import parse, request, error
 
 
 BASE_WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather"
+PADDING = 20
+REVERSE = "\033[;7m"
+RESET = "\033[0m"
 
 
 def _get_api_key():
@@ -86,14 +89,18 @@ def display_weather_info(weather_data, imperial=False):
   temperature = weather_data['main']['temp']
 
   
-  print(f"{city}", end="")
-  print(f"\t{weather_description.capitalize()}", end=" ")
-  print(f"({temperature}°{'F' if imperial else 'C'})")
+  print(f"{REVERSE}{city:^{PADDING}}{RESET}", end="")
+                
+  print(f"\t{weather_description.capitalize():^{PADDING}}", end="")
+  print (f"({temperature} {'F' if imperial else 'C'})")
+
   
+
 if __name__ == "__main__":
   user_args = read_user_cli_args()
   query_url = build_weather_query(user_args.city, 
   user_args.imperial)
   weather_data = get_weather_data(query_url)
-  # display_weather_info(weather_data, user_args.imperial)
+  display_weather_info(weather_data, user_args.imperial)
+  
 
