@@ -93,14 +93,15 @@ def get_weather_data(query_url):
 def display_weather_info(weather_data, imperial=False):
   # prints formateed weather city info
   # arg:  weather_data and imperial
-
+  country = weather_data['country']
   city = weather_data['name']
   weather_id = weather_data["weather"][0]["id"]
   weather_description = weather_data['weather'][0]['description']
   temperature = weather_data['main']['temp']
-  
+  # city, weather displays
   style.change_color(style.REVERSE)
-  print(f"{city:^{style.PADDING}}", end="")
+  print(f"{city:^{style.PADDING}}, {country:^{style.PADDING}}", end="")
+  
   style.change_color(style.RESET)
 
   if weather_id in THUNDERSTORM:
@@ -120,8 +121,9 @@ def display_weather_info(weather_data, imperial=False):
   else:  # In case the API adds new weather codes
       style.change_color(style.RESET)
 
-  print(
-      f"\t{weather_description.capitalize():^{style.PADDING}}",
+
+  # temperature displays
+  print( f"\t{weather_description.capitalize():^{style.PADDING}}",
       end=" ",
   )
 
