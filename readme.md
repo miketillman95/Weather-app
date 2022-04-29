@@ -1,0 +1,1 @@
+Weather app that can check the weather in cities using the CLI and using the open weather api. 
