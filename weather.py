@@ -3,12 +3,17 @@ import json
 import sys
 from configparser import ConfigParser
 from urllib import parse, request, error
-
+import style
 
 BASE_WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather"
-PADDING = 20
-REVERSE = "\033[;7m"
-RESET = "\033[0m"
+THUNDERSTORM = range(200, 300)
+DRIZZLE = range(300, 400)
+RAIN = range(500, 600)
+SNOW = range(600, 700)
+ATMOSPHERE = range(700, 800)
+CLEAR = range(800, 801)
+CLOUDY = range(801, 900)
+
 
 
 def _get_api_key():
@@ -85,14 +90,39 @@ def display_weather_info(weather_data, imperial=False):
   # arg:  weather_data and imperial
 
   city = weather_data['name']
+  weather_id = weather_data["weather"][0]["id"]
   weather_description = weather_data['weather'][0]['description']
   temperature = weather_data['main']['temp']
-
   
-  print(f"{REVERSE}{city:^{PADDING}}{RESET}", end="")
-                
-  print(f"\t{weather_description.capitalize():^{PADDING}}", end="")
-  print (f"({temperature} {'F' if imperial else 'C'})")
+  style.change_color(style.REVERSE)
+  print(f"{city:^{style.PADDING}}", end="")
+  style.change_color(style.RESET)
+
+  if weather_id in THUNDERSTORM:
+      style.change_color(style.RED)
+  elif weather_id in DRIZZLE:
+      style.change_color(style.CYAN)
+  elif weather_id in RAIN:
+      style.change_color(style.BLUE)
+  elif weather_id in SNOW:
+      style.change_color(style.WHITE)
+  elif weather_id in ATMOSPHERE:
+      style.change_color(style.BLUE)
+  elif weather_id in CLEAR:
+      style.change_color(style.YELLOW)
+  elif weather_id in CLOUDY:
+      style.change_color(style.WHITE)
+  else:  # In case the API adds new weather codes
+      style.change_color(style.RESET)
+
+  print(
+      f"\t{weather_description.capitalize():^{style.PADDING}}",
+      end=" ",
+  )
+
+  style.change_color(style.RESET)
+
+  print(f"({temperature}°{'F' if imperial else 'C'})")
 
   
 
@@ -102,5 +132,6 @@ if __name__ == "__main__":
   user_args.imperial)
   weather_data = get_weather_data(query_url)
   display_weather_info(weather_data, user_args.imperial)
+  # print(query_url)
   
 
