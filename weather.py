@@ -76,7 +76,7 @@ def get_weather_data(query_url):
       sys.exit('Cant find weather data for this city')
     else:
       sys.ext(f'Something went wrong...({http_error.code}) ')
-    sys.exti('Cant find weather data for this city')
+    sys.exit('Cant find weather data for this city')
   data = response.read()
 
   try:
@@ -107,11 +107,11 @@ def display_weather_info(weather_data, imperial=False):
   elif weather_id in SNOW:
       style.change_color(style.WHITE)
   elif weather_id in ATMOSPHERE:
-      style.change_color(style.BLUE)
+      style.change_color(style.WHITE)
   elif weather_id in CLEAR:
       style.change_color(style.YELLOW)
   elif weather_id in CLOUDY:
-      style.change_color(style.WHITE)
+      style.change_color(style.BLUE)
   else:  # In case the API adds new weather codes
       style.change_color(style.RESET)
 
